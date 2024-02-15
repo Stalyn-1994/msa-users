@@ -15,11 +15,22 @@ repositories {
 	mavenCentral()
 }
 
+ext{
+	lombook="1.18.30"
+}
 dependencies {
+	// spring dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// database
 	runtimeOnly 'com.h2database:h2'
+
+	//other
+	compileOnly "org.projectlombok:lombok:${lombook}"
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

@@ -17,6 +17,7 @@ repositories {
 
 ext{
 	lombook="1.18.30"
+	mapstruct = "1.5.3.Final"
 }
 dependencies {
 	// spring dependencies
@@ -29,6 +30,8 @@ dependencies {
 
 	//other
 	compileOnly "org.projectlombok:lombok:${lombook}"
+	implementation "org.mapstruct:mapstruct:${mapstruct}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct}"
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

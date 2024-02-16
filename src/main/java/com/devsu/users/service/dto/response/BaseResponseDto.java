@@ -1,4 +1,4 @@
-package com.devsu.users.service.dto.request;
+package com.devsu.users.service.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

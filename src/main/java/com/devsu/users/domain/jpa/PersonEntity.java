@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 
+@Getter
 @Setter
 @MappedSuperclass
 @FieldDefaults(level = AccessLevel.PRIVATE)

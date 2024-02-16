@@ -1,4 +1,4 @@
-package com.devsu.users.service.dto;
+package com.devsu.users.service.dto.request;
 
 import com.devsu.users.domain.jpa.GenderEnum;
 import com.devsu.users.domain.jpa.validations.GenderValidation;
@@ -14,14 +14,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerDto {
+public class CustomerRequestDto {
 
   @NotBlank(message = "Name is required")
   @Size(max = 100, message = "Name must be less than 100 characters")
@@ -39,7 +40,6 @@ public class CustomerDto {
   @Size(min = 8, max = 20, message = "Identification must be between 8 and 20 characters")
   String identification;
 
-  @NotBlank(message = "Address is required")
   String address;
 
   @NotBlank(message = "Cellphone is required")
@@ -53,4 +53,5 @@ public class CustomerDto {
   @NotBlank(message = "Password is required")
   @Length(min = 8, message = "Password must have at least 8 characters")
   String password;
+
 }

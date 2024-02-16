@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS users.customer
     address        VARCHAR(255),
     cellphone      VARCHAR(50),
     password       VARCHAR(255) NOT NULL,
+    client_id     VARCHAR(255) NOT NULL,
     state          BOOLEAN DEFAULT FALSE
 );

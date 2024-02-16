@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerRequestDto {
+public class  CustomerRequestDto {
 
   @NotBlank(message = "Name is required")
   @Size(max = 100, message = "Name must be less than 100 characters")

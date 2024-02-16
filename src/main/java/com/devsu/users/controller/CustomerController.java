@@ -20,30 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/authentication")
+@RequestMapping("api/authentication/customer")
 public class CustomerController {
 
   final CustomerService customerService;
 
-  @PutMapping("/customer")
+  @PutMapping("")
   public ResponseEntity<BaseResponseDto> updateCustomer(
       @RequestBody @Valid CustomerRequestUpdateDto customerDto) {
     return new ResponseEntity<>(customerService.update(customerDto), HttpStatus.OK);
   }
 
-  @PatchMapping("/customer/{identification}")
+  @PatchMapping("/{identification}")
   public ResponseEntity<BaseResponseDto> editCustomer(
       @RequestBody Map<String, Object> customerDto, @PathVariable String identification) {
     return new ResponseEntity<>(customerService.edit(customerDto, identification), HttpStatus.OK);
   }
 
-  @PostMapping("/customer")
+  @PostMapping("")
   public ResponseEntity<BaseResponseDto> saveCustomer(
       @RequestBody @Valid CustomerRequestDto customerDto) {
     return new ResponseEntity<>(customerService.save(customerDto), HttpStatus.CREATED);
   }
 
-  @DeleteMapping("/customer/{identification}")
+  @DeleteMapping("/{identification}")
   public ResponseEntity<BaseResponseDto> saveCustomer(
       @PathVariable String identification) {
     return new ResponseEntity<>(customerService.delete(identification), HttpStatus.NO_CONTENT);

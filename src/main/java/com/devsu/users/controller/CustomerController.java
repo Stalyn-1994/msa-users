@@ -46,6 +46,6 @@ public class CustomerController {
   @DeleteMapping("/customer/{identification}")
   public ResponseEntity<BaseResponseDto> saveCustomer(
       @PathVariable String identification) {
-    return new ResponseEntity<>(customerService.delete(identification), HttpStatus.CREATED);
+    return new ResponseEntity<>(customerService.delete(identification), HttpStatus.NO_CONTENT);
   }
 }

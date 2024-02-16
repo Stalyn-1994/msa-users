@@ -65,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
         Field field = ReflectionUtils.findField(CustomerEntity.class, key);
         if (field != null) {
           field.setAccessible(true);
-          ReflectionUtils.setField(field, customerEntity.get()  , value);
+          ReflectionUtils.setField(field, customerEntity.get(), value);
         }
       });
       String customerId = customerRepository.save(customerEntity.get()).getClientId();
@@ -81,7 +81,19 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public BaseResponseDto delete(CustomerRequestDto customerDto) {
-    return null;
+  public BaseResponseDto delete(String identification) {
+    Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByClientId(
+        identification);
+    if (customerEntity.isPresent()) {
+      customerRepository.delete(customerEntity.get());
+      return BaseResponseDto.builder()
+          .code(HttpStatus.NO_CONTENT.value())
+          .status(HttpStatus.NO_CONTENT.getReasonPhrase())
+          .data(CustomerResponseDto.builder()
+              .customerId(identification)
+              .build())
+          .build();
+    }
+    throw new NotFoundException();
   }
 }

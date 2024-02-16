@@ -8,7 +8,10 @@ import java.util.Map;
 public interface CustomerService {
 
   BaseResponseDto save(CustomerRequestDto customerDto);
+
   BaseResponseDto update(CustomerRequestUpdateDto customerDto);
-  BaseResponseDto edit(Map<String,Object> customerDto,String identification);
-  BaseResponseDto delete(CustomerRequestDto customerDto);
+
+  BaseResponseDto edit(Map<String, Object> customerDto, String identification);
+
+  BaseResponseDto delete(String identification);
 }

@@ -1,5 +1,6 @@
 package com.devsu.users.domain.jpa.exception;
 
+import java.util.Date;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,11 @@ public class ValidationControlHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(value = {NotFoundException.class})
   protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-    String bodyOfResponse = "This should be application specific";
-    return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND,
+    ErrorDto errorDto = ErrorDto.builder()
+        .message(ex.getMessage())
+        .timeStamp(String.valueOf(new Date(System.currentTimeMillis())))
+        .build();
+    return handleExceptionInternal(ex, errorDto, new HttpHeaders(), HttpStatus.NOT_FOUND,
         request);
   }
 }

@@ -25,27 +25,28 @@ public class CustomerController {
 
   final CustomerService customerService;
 
+  @PostMapping("")
+  public ResponseEntity<BaseResponseDto> saveCustomer(
+      @RequestBody @Valid CustomerRequestDto customerDto) {
+    return customerService.save(customerDto);
+  }
+
   @PutMapping("")
   public ResponseEntity<BaseResponseDto> updateCustomer(
       @RequestBody @Valid CustomerRequestUpdateDto customerDto) {
-    return new ResponseEntity<>(customerService.update(customerDto), HttpStatus.OK);
+    return customerService.update(customerDto);
   }
 
   @PatchMapping("/{identification}")
   public ResponseEntity<BaseResponseDto> editCustomer(
       @RequestBody Map<String, Object> customerDto, @PathVariable String identification) {
-    return new ResponseEntity<>(customerService.edit(customerDto, identification), HttpStatus.OK);
+    return customerService.edit(customerDto, identification);
   }
 
-  @PostMapping("")
-  public ResponseEntity<BaseResponseDto> saveCustomer(
-      @RequestBody @Valid CustomerRequestDto customerDto) {
-    return new ResponseEntity<>(customerService.save(customerDto), HttpStatus.CREATED);
-  }
 
   @DeleteMapping("/{identification}")
-  public ResponseEntity<BaseResponseDto> saveCustomer(
+  public ResponseEntity<BaseResponseDto> deleteCustomer(
       @PathVariable String identification) {
-    return new ResponseEntity<>(customerService.delete(identification), HttpStatus.NO_CONTENT);
+    return customerService.delete(identification);
   }
 }

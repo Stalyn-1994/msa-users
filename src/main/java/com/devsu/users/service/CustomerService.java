@@ -4,14 +4,15 @@ import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import com.devsu.users.service.dto.response.BaseResponseDto;
 import java.util.Map;
+import org.springframework.http.ResponseEntity;
 
 public interface CustomerService {
 
-  BaseResponseDto save(CustomerRequestDto customerDto);
+  ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto);
 
-  BaseResponseDto update(CustomerRequestUpdateDto customerDto);
+  ResponseEntity<BaseResponseDto> update(CustomerRequestUpdateDto customerDto);
 
-  BaseResponseDto edit(Map<String, Object> customerDto, String identification);
+  ResponseEntity<BaseResponseDto> edit(Map<String, Object> customerDto, String identification);
 
-  BaseResponseDto delete(String identification);
+  ResponseEntity<BaseResponseDto> delete(String identification);
 }

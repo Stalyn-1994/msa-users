@@ -1,5 +1,8 @@
 package com.devsu.users.service.impl;
 
+import static com.devsu.users.helper.Helper.buildResponseEntity;
+import static com.devsu.users.util.Constants.NOT_FOUND;
+
 import com.devsu.users.domain.jpa.CustomerEntity;
 import com.devsu.users.domain.jpa.exception.NotFoundException;
 import com.devsu.users.repository.CustomerRepository;
@@ -14,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -25,39 +29,32 @@ public class CustomerServiceImpl implements CustomerService {
   private final CustomerServiceMapper customerServiceMapper;
 
   @Override
-  public BaseResponseDto save(CustomerRequestDto customerDto) {
+  public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
     String customerId = customerRepository.save(customerServiceMapper.toCustomerEntity(customerDto))
         .getClientId();
-    return BaseResponseDto.builder()
-        .code(HttpStatus.CREATED.value())
-        .status(HttpStatus.CREATED.getReasonPhrase())
-        .data(CustomerResponseDto.builder()
-            .customerId(customerId)
-            .build())
-        .build();
+    return buildResponseEntity(CustomerResponseDto.builder()
+        .customerId(customerId)
+        .build(), HttpStatus.CREATED);
   }
 
   @Override
-  public BaseResponseDto update(CustomerRequestUpdateDto customerDto) {
+  public ResponseEntity<BaseResponseDto> update(CustomerRequestUpdateDto customerDto) {
     Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByClientId(
         customerDto.getCustomerId());
     if (customerEntity.isPresent()) {
       String customerId = customerRepository.save(
           customerServiceMapper.toCustomerEntityUpdated(customerDto
               , customerEntity.get().getId())).getClientId();
-      return BaseResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.getReasonPhrase())
-          .data(CustomerResponseDto.builder()
-              .customerId(customerId)
-              .build())
-          .build();
+      return buildResponseEntity(CustomerResponseDto.builder()
+          .customerId(customerId)
+          .build(), HttpStatus.OK);
     }
-    throw new NotFoundException();
+    throw new NotFoundException(NOT_FOUND);
   }
 
   @Override
-  public BaseResponseDto edit(Map<String, Object> customerDto, String identification) {
+  public ResponseEntity<BaseResponseDto> edit(Map<String, Object> customerDto,
+      String identification) {
     Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByClientId(
         identification);
     if (customerEntity.isPresent()) {
@@ -69,31 +66,23 @@ public class CustomerServiceImpl implements CustomerService {
         }
       });
       String customerId = customerRepository.save(customerEntity.get()).getClientId();
-      return BaseResponseDto.builder()
-          .code(HttpStatus.OK.value())
-          .status(HttpStatus.OK.getReasonPhrase())
-          .data(CustomerResponseDto.builder()
-              .customerId(customerId)
-              .build())
-          .build();
+      return buildResponseEntity(CustomerResponseDto.builder()
+          .customerId(customerId)
+          .build(), HttpStatus.OK)
+          ;
     }
-    throw new NotFoundException();
+    throw new NotFoundException(NOT_FOUND);
   }
 
   @Override
-  public BaseResponseDto delete(String identification) {
+  public ResponseEntity<BaseResponseDto> delete(String identification) {
     Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByClientId(
         identification);
     if (customerEntity.isPresent()) {
       customerRepository.delete(customerEntity.get());
-      return BaseResponseDto.builder()
-          .code(HttpStatus.NO_CONTENT.value())
-          .status(HttpStatus.NO_CONTENT.getReasonPhrase())
-          .data(CustomerResponseDto.builder()
-              .customerId(identification)
-              .build())
-          .build();
+      return buildResponseEntity(CustomerResponseDto.builder().customerId(identification).build(),
+          HttpStatus.NO_CONTENT);
     }
-    throw new NotFoundException();
+    throw new NotFoundException(NOT_FOUND);
   }
 }

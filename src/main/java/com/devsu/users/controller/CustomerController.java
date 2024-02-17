@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/authentication/customer")
+@RequestMapping("api/customer")
 public class CustomerController {
 
   final CustomerService customerService;

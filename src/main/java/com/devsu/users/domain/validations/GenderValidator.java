@@ -1,9 +1,8 @@
-package com.devsu.users.domain.jpa.validations;
+package com.devsu.users.domain.validations;
 
-import com.devsu.users.domain.jpa.GenderEnum;
+import com.devsu.users.domain.db.GenderEnum;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.util.Objects;
 
 public class GenderValidator implements ConstraintValidator<GenderValidation, GenderEnum> {
 

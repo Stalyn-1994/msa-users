@@ -1,4 +1,4 @@
-package com.devsu.users.domain.jpa;
+package com.devsu.users.domain.db;
 
 import java.util.Arrays;
 import java.util.Optional;

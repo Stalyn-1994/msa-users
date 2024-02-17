@@ -1,4 +1,4 @@
-package com.devsu.users.domain.jpa.exception;
+package com.devsu.users.domain.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,6 @@ public class ErrorDto {
 
   String message;
   String timeStamp;
-  String resource;
+  String source;
 
 }

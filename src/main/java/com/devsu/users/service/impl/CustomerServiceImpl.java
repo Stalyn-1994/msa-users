@@ -1,9 +1,13 @@
 package com.devsu.users.service.impl;
 
 import static com.devsu.users.helper.Helper.buildResponseEntity;
+import static com.devsu.users.util.Constants.ALREADY_IDENTIFICATION_REGISTRATION;
+import static com.devsu.users.util.Constants.NOT_FOUND;
 
-import com.devsu.users.domain.jpa.CustomerEntity;
-import com.devsu.users.repository.CustomerDao;
+import com.devsu.users.domain.db.CustomerEntity;
+import com.devsu.users.domain.exception.BadRequestException;
+import com.devsu.users.domain.exception.NotFoundException;
+import com.devsu.users.repository.CustomerRepository;
 import com.devsu.users.service.CustomerService;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
@@ -24,12 +28,15 @@ import org.springframework.util.ReflectionUtils;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-  private final CustomerDao customerDao;
+  private final CustomerRepository customerRepository;
   private final CustomerServiceMapper customerServiceMapper;
 
   @Override
   public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
-    String customerId = customerDao.save(customerServiceMapper.toCustomerEntity(customerDto))
+    if (isUniqueIdentification(customerDto.getIdentification())) {
+      throw new BadRequestException(ALREADY_IDENTIFICATION_REGISTRATION);
+    }
+    String customerId = customerRepository.save(customerServiceMapper.toCustomerEntity(customerDto))
         .getClientId();
     return buildResponseEntity(CustomerResponseDto.builder()
         .customerId(customerId)
@@ -38,9 +45,9 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public ResponseEntity<BaseResponseDto> update(CustomerRequestUpdateDto customerDto) {
-    CustomerEntity customerEntity = customerDao.findCustomerEntitiesByClientId(
-        customerDto.getCustomerId());
-    String customerId = customerDao.save(
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+        customerDto.getCustomerId()).orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    String customerId = customerRepository.save(
             customerServiceMapper.toCustomerEntityUpdated(customerDto, customerEntity.getId()))
         .getClientId();
     return buildResponseEntity(CustomerResponseDto.builder()
@@ -51,7 +58,8 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public ResponseEntity<BaseResponseDto> edit(Map<String, Object> customerDto,
       String identification) {
-    CustomerEntity customerEntity = customerDao.findCustomerEntitiesByClientId(identification);
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+        identification).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     customerDto.forEach((key, value) -> {
       Field field = ReflectionUtils.findField(CustomerEntity.class, key);
       if (field != null) {
@@ -59,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
         ReflectionUtils.setField(field, customerEntity, value);
       }
     });
-    String customerId = customerDao.save(customerEntity).getClientId();
+    String customerId = customerRepository.save(customerEntity).getClientId();
     return buildResponseEntity(CustomerResponseDto.builder()
         .customerId(customerId)
         .build(), HttpStatus.OK);
@@ -67,8 +75,13 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public ResponseEntity<BaseResponseDto> delete(String identification) {
-    customerDao.delete(identification);
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+        identification).orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    customerRepository.delete(customerEntity);
     return ResponseEntity.noContent().build();
+  }
 
+  private Boolean isUniqueIdentification(String identification) {
+    return customerRepository.findCustomerEntitiesByClientId(identification).isEmpty();
   }
 }

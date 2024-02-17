@@ -1,4 +1,4 @@
-package com.devsu.users.domain.jpa.validations;
+package com.devsu.users.domain.validations;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;

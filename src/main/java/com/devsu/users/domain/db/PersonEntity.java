@@ -1,20 +1,20 @@
-package com.devsu.users.domain.jpa;
+package com.devsu.users.domain.db;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 
-@Getter
-@Setter
-@MappedSuperclass
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Data
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(schema = "users",name = "person")
 public abstract class PersonEntity {
 
   @Id

@@ -1,6 +1,6 @@
 package com.devsu.users.service.mapper;
 
-import com.devsu.users.domain.jpa.CustomerEntity;
+import com.devsu.users.domain.db.CustomerEntity;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import java.util.UUID;
@@ -17,7 +17,7 @@ public abstract class CustomerServiceMapper {
   @Mapping(target = "address", source = "customerDto.address")
   @Mapping(target = "cellphone", source = "customerDto.cellphone")
   @Mapping(target = "password", source = "customerDto.password")
-  @Mapping(target = "status", source = "customerDto.status")
+  @Mapping(target = "state", source = "customerDto.status")
   @Mapping(target = "clientId", expression = "java(generateClientId())")
   public abstract CustomerEntity toCustomerEntity(CustomerRequestDto customerDto);
 

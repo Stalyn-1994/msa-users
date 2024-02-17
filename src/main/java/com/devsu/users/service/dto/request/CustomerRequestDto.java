@@ -1,7 +1,7 @@
 package com.devsu.users.service.dto.request;
 
-import com.devsu.users.domain.jpa.GenderEnum;
-import com.devsu.users.domain.jpa.validations.GenderValidation;
+import com.devsu.users.domain.db.GenderEnum;
+import com.devsu.users.domain.validations.GenderValidation;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class  CustomerRequestDto {
+public class CustomerRequestDto {
 
   @NotBlank(message = "Name is required")
   @Size(max = 100, message = "Name must be less than 100 characters")

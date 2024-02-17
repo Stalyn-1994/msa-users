@@ -6,10 +6,12 @@ import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import com.devsu.users.service.dto.response.BaseResponseDto;
 import jakarta.validation.Valid;
 import java.util.Map;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,5 +50,11 @@ public class CustomerController {
   public ResponseEntity<BaseResponseDto> deleteCustomer(
       @PathVariable String identification) {
     return customerService.delete(identification);
+  }
+
+  @GetMapping("/{identification}")
+  public ResponseEntity<BaseResponseDto> getCustomerByIdentification(
+      @PathVariable String identification) {
+    return customerService.get(identification);
   }
 }

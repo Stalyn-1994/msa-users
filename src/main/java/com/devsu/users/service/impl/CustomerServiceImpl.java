@@ -12,6 +12,7 @@ import com.devsu.users.service.CustomerService;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import com.devsu.users.service.dto.response.BaseResponseDto;
+import com.devsu.users.service.dto.response.CustomerInfoResponseDto;
 import com.devsu.users.service.dto.response.CustomerResponseDto;
 import com.devsu.users.service.mapper.CustomerServiceMapper;
 import jakarta.transaction.Transactional;
@@ -34,18 +35,19 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
     if (isUniqueIdentification(customerDto.getIdentification())) {
-      throw new BadRequestException(ALREADY_IDENTIFICATION_REGISTRATION);
+      String customerId = customerRepository.save(
+              customerServiceMapper.toCustomerEntity(customerDto))
+          .getClientId();
+      return buildResponseEntity(CustomerResponseDto.builder()
+          .customerId(customerId)
+          .build(), HttpStatus.CREATED);
     }
-    String customerId = customerRepository.save(customerServiceMapper.toCustomerEntity(customerDto))
-        .getClientId();
-    return buildResponseEntity(CustomerResponseDto.builder()
-        .customerId(customerId)
-        .build(), HttpStatus.CREATED);
+    throw new BadRequestException(ALREADY_IDENTIFICATION_REGISTRATION);
   }
 
   @Override
   public ResponseEntity<BaseResponseDto> update(CustomerRequestUpdateDto customerDto) {
-    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByIdentification(
         customerDto.getCustomerId()).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     String customerId = customerRepository.save(
             customerServiceMapper.toCustomerEntityUpdated(customerDto, customerEntity.getId()))
@@ -58,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public ResponseEntity<BaseResponseDto> edit(Map<String, Object> customerDto,
       String identification) {
-    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByIdentification(
         identification).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     customerDto.forEach((key, value) -> {
       Field field = ReflectionUtils.findField(CustomerEntity.class, key);
@@ -75,13 +77,22 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public ResponseEntity<BaseResponseDto> delete(String identification) {
-    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByIdentification(
         identification).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     customerRepository.delete(customerEntity);
     return ResponseEntity.noContent().build();
   }
 
+  @Override
+  public ResponseEntity<BaseResponseDto> get(String identification) {
+    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByIdentification(
+        identification).orElseThrow(() -> new NotFoundException(NOT_FOUND));
+    CustomerInfoResponseDto customerResponseDto = customerServiceMapper.toCustomerInfoResponseDto(
+        customerEntity);
+    return buildResponseEntity(customerResponseDto, HttpStatus.OK);
+  }
+
   private Boolean isUniqueIdentification(String identification) {
-    return customerRepository.findCustomerEntitiesByClientId(identification).isEmpty();
+    return customerRepository.findCustomerEntitiesByIdentification(identification).isEmpty();
   }
 }

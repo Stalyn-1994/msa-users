@@ -3,6 +3,7 @@ package com.devsu.users.service.mapper;
 import com.devsu.users.domain.db.CustomerEntity;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
+import com.devsu.users.service.dto.response.CustomerInfoResponseDto;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,7 +18,7 @@ public abstract class CustomerServiceMapper {
   @Mapping(target = "address", source = "customerDto.address")
   @Mapping(target = "cellphone", source = "customerDto.cellphone")
   @Mapping(target = "password", source = "customerDto.password")
-  @Mapping(target = "state", source = "customerDto.status")
+  @Mapping(target = "state", source = "customerDto.state")
   @Mapping(target = "clientId", expression = "java(generateClientId())")
   public abstract CustomerEntity toCustomerEntity(CustomerRequestDto customerDto);
 
@@ -31,4 +32,6 @@ public abstract class CustomerServiceMapper {
     customerEntity.setId(id);
     return customerEntity;
   }
+
+  public abstract CustomerInfoResponseDto toCustomerInfoResponseDto(CustomerEntity customer);
 }

@@ -13,6 +13,6 @@ public class ErrorDto {
 
   String message;
   String timeStamp;
-  String source;
+  String resource;
 
 }

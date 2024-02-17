@@ -46,9 +46,9 @@ public class CustomerRequestDto {
   @Pattern(regexp = "^\\+[1-9]\\d{1,14}$", message = "Cellphone must be a valid international phone number")
   String cellphone;
 
-  @NotNull(message = "Status is required")
+
   @Builder.Default
-  Boolean status = false;
+  Boolean state = false;
 
   @NotBlank(message = "Password is required")
   @Length(min = 8, message = "Password must have at least 8 characters")

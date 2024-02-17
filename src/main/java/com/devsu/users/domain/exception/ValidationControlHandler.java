@@ -18,6 +18,7 @@ public class ValidationControlHandler extends ResponseEntityExceptionHandler {
     ErrorDto errorDto = ErrorDto.builder()
         .message(ex.getMessage())
         .timeStamp(String.valueOf(new Date(System.currentTimeMillis())))
+        .resource(((ServletWebRequest) request).getRequest().getRequestURL().toString())
         .build();
     return handleExceptionInternal(ex, errorDto, new HttpHeaders(), HttpStatus.NOT_FOUND,
         request);
@@ -29,7 +30,7 @@ public class ValidationControlHandler extends ResponseEntityExceptionHandler {
     ErrorDto errorDto = ErrorDto.builder()
         .message(ex.getMessage())
         .timeStamp(String.valueOf(new Date(System.currentTimeMillis())))
-        .source(((ServletWebRequest) request).getRequest().getRequestURL().toString())
+        .resource(((ServletWebRequest) request).getRequest().getRequestURL().toString())
         .build();
     return handleExceptionInternal(ex, errorDto, new HttpHeaders(), HttpStatus.BAD_REQUEST,
         request);

@@ -3,6 +3,6 @@ package com.devsu.users.helper.factory;
 import lombok.Getter;
 
 @Getter
-public enum TypeEnum {
-  ACCOUNT, CUSTOMER;
+public enum CreateTypeEnum {
+  ACCOUNT_CUSTOMER, CUSTOMER;
 }

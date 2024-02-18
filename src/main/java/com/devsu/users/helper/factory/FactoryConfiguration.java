@@ -1,7 +1,7 @@
 package com.devsu.users.helper.factory;
 
-import static com.devsu.users.helper.factory.TypeEnum.ACCOUNT;
-import static com.devsu.users.helper.factory.TypeEnum.CUSTOMER;
+import static com.devsu.users.helper.factory.CreateTypeEnum.ACCOUNT_CUSTOMER;
+import static com.devsu.users.helper.factory.CreateTypeEnum.CUSTOMER;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,10 +17,10 @@ public class FactoryConfiguration {
   final CustomerWithoutAccount customerWithoutAccount;
 
   @Bean
-  public Map<TypeEnum, CustomerInterface> loadServices() {
-    Map<TypeEnum, CustomerInterface> map = new LinkedHashMap<>();
+  public Map<CreateTypeEnum, CustomerInterface> loadServices() {
+    Map<CreateTypeEnum, CustomerInterface> map = new LinkedHashMap<>();
     map.put(CUSTOMER, customerWithoutAccount);
-    map.put(ACCOUNT, customerWithAccount);
+    map.put(ACCOUNT_CUSTOMER, customerWithAccount);
     return map;
   }
 }

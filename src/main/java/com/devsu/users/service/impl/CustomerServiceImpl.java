@@ -1,14 +1,14 @@
 package com.devsu.users.service.impl;
 
 import static com.devsu.users.helper.Helper.buildResponseEntity;
-import static com.devsu.users.helper.factory.TypeEnum.ACCOUNT;
-import static com.devsu.users.helper.factory.TypeEnum.CUSTOMER;
+import static com.devsu.users.helper.factory.CreateTypeEnum.ACCOUNT_CUSTOMER;
+import static com.devsu.users.helper.factory.CreateTypeEnum.CUSTOMER;
 import static com.devsu.users.util.Constants.NOT_FOUND;
 
 import com.devsu.users.domain.db.CustomerEntity;
 import com.devsu.users.domain.exception.NotFoundException;
+import com.devsu.users.helper.factory.CreateTypeEnum;
 import com.devsu.users.helper.factory.CustomerInterface;
-import com.devsu.users.helper.factory.TypeEnum;
 import com.devsu.users.repository.CustomerRepository;
 import com.devsu.users.service.CustomerService;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
@@ -16,7 +16,6 @@ import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import com.devsu.users.service.dto.response.BaseResponseDto;
 import com.devsu.users.service.dto.response.CustomerResponseDto;
 import com.devsu.users.service.mapper.CustomerServiceMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import java.lang.reflect.Field;
@@ -26,7 +25,6 @@ import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,21 +39,15 @@ public class CustomerServiceImpl implements CustomerService {
   final CustomerRepository customerRepository;
   final CustomerServiceMapper customerServiceMapper;
   @Resource
-  final Map<TypeEnum, CustomerInterface> loadServices;
+  final Map<CreateTypeEnum, CustomerInterface> loadServices;
 
   @Override
   public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
-    String customerId;
     Optional<CustomerEntity> customerEntity = customerRepository
         .findCustomerEntitiesByIdentification(customerDto.getIdentification());
-    if (Objects.isNull(customerDto.getAccount())) {
-      customerId = loadServices.get(CUSTOMER).save(customerEntity, customerDto);
-    } else {
-      customerId = loadServices.get(ACCOUNT).save(customerEntity, customerDto);
-    }
-    return buildResponseEntity(CustomerResponseDto.builder()
-        .customerId(customerId)
-        .build(), HttpStatus.CREATED);
+    CreateTypeEnum createTypeEnum =
+        Objects.isNull(customerDto.getAccount()) ? CUSTOMER : ACCOUNT_CUSTOMER;
+    return loadServices.get(createTypeEnum).save(customerEntity, customerDto);
   }
 
   @Override

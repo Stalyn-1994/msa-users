@@ -1,4 +1,4 @@
-package com.devsu.users.domain.db;
+package com.devsu.users.domain.enums;
 
 import java.util.Arrays;
 import java.util.Optional;

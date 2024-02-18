@@ -1,6 +1,6 @@
 package com.devsu.users.domain.validations;
 
-import com.devsu.users.domain.db.GenderEnum;
+import com.devsu.users.domain.enums.GenderEnum;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

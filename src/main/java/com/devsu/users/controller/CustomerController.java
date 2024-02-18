@@ -53,7 +53,7 @@ public class CustomerController {
   }
 
   @GetMapping("/{identification}")
-  public ResponseEntity<BaseResponseDto> getCustomerByIdentification(
+  public ResponseEntity<BaseResponseDto> getCustomerByCustomerId(
       @PathVariable String identification) {
     return customerService.get(identification);
   }

@@ -1,7 +1,8 @@
 package com.devsu.users.service.dto.request;
 
-import com.devsu.users.domain.db.GenderEnum;
+import com.devsu.users.domain.enums.GenderEnum;
 import com.devsu.users.domain.validations.GenderValidation;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -54,4 +55,6 @@ public class CustomerRequestDto {
   @Length(min = 8, message = "Password must have at least 8 characters")
   String password;
 
+ @Valid
+  AccountRequestDto account;
 }

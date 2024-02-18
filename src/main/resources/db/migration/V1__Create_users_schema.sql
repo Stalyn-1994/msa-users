@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS users.person
 -- Create table customer if not exist
 CREATE TABLE IF NOT EXISTS users.customer
 (
-    id             SERIAL PRIMARY KEY,
-    password       VARCHAR(255)             NOT NULL,
-    client_id      VARCHAR(255)             NOT NULL,
-    state          BOOLEAN                           DEFAULT FALSE,
-    created_on     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_on     TIMESTAMP WITH TIME ZONE
+    id         SERIAL PRIMARY KEY,
+    password   VARCHAR(255)             NOT NULL,
+    client_id  VARCHAR(255)             NOT NULL,
+    state      BOOLEAN                           DEFAULT FALSE,
+    created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TRIGGER document_updated_on_trigger

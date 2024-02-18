@@ -16,5 +16,4 @@ public interface CustomerService {
   ResponseEntity<BaseResponseDto> edit(Map<String, Object> customerDto, String identification);
 
   ResponseEntity<BaseResponseDto> delete(String identification);
-  ResponseEntity<BaseResponseDto> get(String identification);
 }

@@ -34,22 +34,29 @@ public class CustomerWithAccount implements CustomerInterface {
   @Override
   public ResponseEntity<BaseResponseDto> save(Optional<CustomerEntity> customerEntity,
       CustomerRequestDto customerRequestDto) {
-    String customerId;
-    if (customerEntity.isEmpty()) {
-      customerId = customerRepository.save(
-          customerServiceMapper.toCustomerEntity(customerRequestDto)).getClientId();
-    } else {
-      customerId = customerEntity.get().getClientId();
-    }
+    String customerId = getCustomerId(customerEntity, customerRequestDto);
     customerRequestDto.getAccount().setName(customerRequestDto.getName());
-    try {
-      kafkaService.send(environment.getRequiredProperty("kafka.topic"),
-          objectMapper.writeValueAsString(customerRequestDto.getAccount()));
-    } catch (Exception exception) {
-      throw new BadRequestException(exception.getMessage());
-    }
+    kafkaService.send(environment.getRequiredProperty("kafka.topic"),
+        getStringAccount(customerRequestDto));
     return buildResponseEntity(CustomerResponseDto.builder()
         .customerId(customerId)
         .build(), HttpStatus.CREATED);
+  }
+
+  private String getCustomerId(Optional<CustomerEntity> customerEntity,
+      CustomerRequestDto customerRequestDto) {
+    if (customerEntity.isEmpty()) {
+      return customerRepository.save(customerServiceMapper.toCustomerEntity(customerRequestDto))
+          .getClientId();
+    }
+    return customerEntity.get().getClientId();
+  }
+
+  private String getStringAccount(CustomerRequestDto customerRequestDto) {
+    try {
+      return objectMapper.writeValueAsString(customerRequestDto.getAccount());
+    } catch (Exception exception) {
+      throw new BadRequestException(exception.getMessage());
+    }
   }
 }

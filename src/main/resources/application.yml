@@ -1,5 +1,14 @@
 spring:
   datasource:
+    hikari:
+      pool-name: Postgresql
+      connectionTimeout: 120000
+      validation-timeout: 50000
+      idleTimeout: 300000
+      maxLifetime: 600000
+      minimum-idle: 3
+      maximum-pool-size: 5
+      leak-detection-threshold: 120000
     url: jdbc:postgresql://localhost:5432/customer
     username: postgres
     password: admin
@@ -8,3 +17,6 @@ spring:
     baseline-on-migrate: true
 kafka:
   topic: example
+
+cipher:
+  key: a1B2c3D4e5F6g7H8

@@ -1,6 +1,8 @@
 package com.devsu.users.domain.db;
 
+import com.devsu.users.helper.CryptoConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +28,8 @@ public class CustomerEntity extends PersonEntity {
   @NotNull(message = "Password cannot be null")
   @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
   @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password must contain at least one digit, one lowercase, one uppercase, one special character, and no whitespaces")
-  @Column(length = 50)
+  @Column(length = 255)
+  @Convert(converter = CryptoConverter.class)
   private String password;
   @Column(length = 50)
   @NotNull(message = "State cannot be null")

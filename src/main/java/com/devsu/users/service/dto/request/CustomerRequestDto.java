@@ -25,21 +25,21 @@ import org.hibernate.validator.constraints.Length;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerRequestDto {
 
+  @NotBlank(message = "Identification is required")
+  @Size(min = 8, max = 20, message = "Identification must be between 8 and 20 characters")
+  String identification;
+
   @NotBlank(message = "Name is required")
   @Size(max = 100, message = "Name must be less than 100 characters")
   String name;
-
-  @GenderValidation
-  GenderEnum gender;
 
   @NotNull(message = "Age is required")
   @Min(value = 0, message = "Age must be at least 18")
   @Max(value = 100, message = "Age must be less than 100")
   Integer age;
 
-  @NotBlank(message = "Identification is required")
-  @Size(min = 8, max = 20, message = "Identification must be between 8 and 20 characters")
-  String identification;
+  @GenderValidation
+  GenderEnum gender;
 
   String address;
 
@@ -53,8 +53,9 @@ public class CustomerRequestDto {
 
   @NotBlank(message = "Password is required")
   @Length(min = 8, message = "Password must have at least 8 characters")
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password must contain at least one digit, one lowercase, one uppercase, one special character, and no whitespaces")
   String password;
 
- @Valid
+  @Valid
   AccountRequestDto account;
 }

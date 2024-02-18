@@ -38,8 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public ResponseEntity<BaseResponseDto> save(CustomerRequestDto customerDto) {
-    Optional<CustomerEntity> customerEntity = customerRepository.findCustomerEntitiesByIdentification(
-        customerDto.getIdentification());
+    Optional<CustomerEntity> customerEntity = customerRepository
+        .findCustomerEntitiesByIdentification(customerDto.getIdentification());
     if (Objects.isNull(customerDto.getAccount())) {
       if (customerEntity.isEmpty()) {
         String customerId = customerRepository.save(

@@ -51,10 +51,4 @@ public class CustomerController {
       @PathVariable String identification) {
     return customerService.delete(identification);
   }
-
-  @GetMapping("/{identification}")
-  public ResponseEntity<BaseResponseDto> getCustomerByCustomerId(
-      @PathVariable String identification) {
-    return customerService.get(identification);
-  }
 }

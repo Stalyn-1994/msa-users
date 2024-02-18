@@ -12,7 +12,6 @@ import com.devsu.users.service.CustomerService;
 import com.devsu.users.service.dto.request.CustomerRequestDto;
 import com.devsu.users.service.dto.request.CustomerRequestUpdateDto;
 import com.devsu.users.service.dto.response.BaseResponseDto;
-import com.devsu.users.service.dto.response.CustomerInfoResponseDto;
 import com.devsu.users.service.dto.response.CustomerResponseDto;
 import com.devsu.users.service.mapper.CustomerServiceMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -106,14 +105,5 @@ public class CustomerServiceImpl implements CustomerService {
         customerId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     customerRepository.delete(customerEntity);
     return ResponseEntity.noContent().build();
-  }
-
-  @Override
-  public ResponseEntity<BaseResponseDto> get(String customerId) {
-    CustomerEntity customerEntity = customerRepository.findCustomerEntitiesByClientId(
-        customerId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
-    CustomerInfoResponseDto customerResponseDto = customerServiceMapper.toCustomerInfoResponseDto(
-        customerEntity);
-    return buildResponseEntity(customerResponseDto, HttpStatus.OK);
   }
 }
